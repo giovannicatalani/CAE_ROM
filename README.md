@@ -6,6 +6,8 @@
 This repository contains the implementation of a Deep Learning Framework based on Convolutional Autoencoder (CAE) for the generation of a non-linear and efficient ROM for the prediction of the unsteady aerodynamic simulations. 
 The description of the problem and the dataset can be found in the Thesis of G.Catalani "Machine Learning based local reduced order modeling for the prediction of unsteady aerodynamic loads " http://resolver.tudelft.nl/uuid:cd5bf762-ab2a-4c9e-8b51-58a173440830 . This model represents an extension of the linear models based on the Proper Orthogonal Decomposition and Neural Networks presented in the thesis.
 
+![alt text](https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/readme_cae_rom.png?raw=true)
+
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
@@ -21,6 +23,10 @@ The description of the problem and the dataset can be found in the Thesis of G.C
 During the offline stage (training) of the model, the Autoencoder and the MLP are trained together: the CAE learns the mapping between the Input Images (113,65) to their latent representation and then back to reconstructed images through the decoder, while the MLP learns the mapping from the control inputs (AoA, pitch rate..) to the AE latent vectors.  The cumulative loss function contains two weighed terms: the AE reconstruction error, and the MLP latent vector prediction error.
 
 ![alt text](https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Offline_Stage.png?raw=true)
+
+During the online stage (testing) of the model, the Encoder part of the CAE is discarderd. The control inputs are fed into the MLP, whose output represented the prediction of the latent vector which is then fed into the pretrained decoder. 
+
+![alt text](https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Online_Stage.jpg?raw=true)
 
 
 
