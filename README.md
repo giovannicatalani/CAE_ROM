@@ -6,7 +6,7 @@
 This repository contains the implementation of a Deep Learning Framework based on Convolutional Autoencoder (CAE) for the generation of a non-linear and efficient ROM for the prediction of the unsteady aerodynamic simulations. 
 The description of the problem and the dataset can be found in the Thesis of G.Catalani "Machine Learning based local reduced order modeling for the prediction of unsteady aerodynamic loads " http://resolver.tudelft.nl/uuid:cd5bf762-ab2a-4c9e-8b51-58a173440830 . This model represents an extension of the linear models based on the Proper Orthogonal Decomposition and Neural Networks presented in the thesis.
 
-<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/readme_cae_rom.png" width="800" />
+<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/readme_cae_rom.png" width="600" />
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
