@@ -18,7 +18,7 @@ The description of the problem and the dataset can be found in the Thesis of G.C
 
 
 
-### MODEL
+### Model
 
 During the offline stage (training) of the model, the Autoencoder and the MLP are trained together: the CAE learns the mapping between the Input Images (113,65) to their latent representation and then back to reconstructed images through the decoder, while the MLP learns the mapping from the control inputs (AoA, pitch rate..) to the AE latent vectors.  The cumulative loss function contains two weighed terms: the AE reconstruction error, and the MLP latent vector prediction error.
 
