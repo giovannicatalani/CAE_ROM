@@ -14,6 +14,7 @@ from Hidden_Model import MLP
 import numpy as np
 import matplotlib.pyplot as plt
 from utilities_ import DataLoader, run_epoch, run_val, predictmaneuver
+import matplotlib as mpl
 
 # Directories
 #data_directory = '/content/drive/MyDrive/Thesis NLR/data/'
@@ -23,7 +24,7 @@ test_maneuver = 'pitch_a10_A10_f05'
 model_path = 'D:/Thesis/POD_LSTM/Autoencoder/model.pt'
 best_model_path = 'D:/Thesis/POD_LSTM/Autoencoder/best_model.pt'
 additional_data = True
-train_model = True
+train_model = False
 
 # Define the device to use for training (e.g. GPU, CPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -105,20 +106,20 @@ if train_model == True:
 pred_test, true_test = predictmaneuver(model, model_lat, best_model_path, data_directory,
                                        test_maneuver, p_mean, p_std, control_mean, control_std, device=device)
 
-# Plotting
+# %% Plotting
 plt.style.use(['science', 'ieee'])
 MULDICON = LoadMuldiconProperties(data_directory)
 shape = [113, 65]
-k = 100
+k = 50
 
 p_upper_true = true_test[k, int(shape[0] / 2):, :]
 p_upper_pred = pred_test[k, int(shape[0] / 2):, :]
 
 # Create figures for pressure and with force coefficient for upper surface
 f = plt.figure(figsize=(8, 3))
-ax1 = plt.subplot2grid((1, 3), (0, 0))
-ax2 = plt.subplot2grid((1, 3), (0, 1))
-ax3 = plt.subplot2grid((1, 3), (0, 2))
+ax1 = plt.subplot2grid((1, 2), (0, 0))
+ax2 = plt.subplot2grid((1, 2), (0, 1))
+#ax3 = plt.subplot2grid((1, 3), (0, 2))
 
 vmin = -5
 vmax = 1
@@ -126,14 +127,18 @@ vmax = 1
 f.suptitle('Pressure Upper surface,Snapshot N.' + str(k))
 im = ax1.contourf(MULDICON.geom.geom_x_upper_norm, MULDICON.geom.geom_y_upper_norm,
                   p_upper_true, 200, vmin=vmin, vmax=vmax, cmap='jet')
-ax1.title.set_text('True')
+ax1.title.set_text('Ground Truth')
 
 im = ax2.contourf(MULDICON.geom.geom_x_upper_norm, MULDICON.geom.geom_y_upper_norm,
                   p_upper_pred, 200, vmin=vmin, vmax=vmax, cmap='jet')
 ax2.title.set_text('Prediction')
 
-im = ax3.contourf(MULDICON.geom.geom_x_upper_norm, MULDICON.geom.geom_y_upper_norm,
-                  np.abs(p_upper_pred-p_upper_true), 200, vmin=0, vmax=1, cmap='jet')
-ax3.title.set_text('Absolute Error')
-
-clb = f.colorbar(im, ax=ax3)
+#im = ax3.contourf(MULDICON.geom.geom_x_upper_norm, MULDICON.geom.geom_y_upper_norm,
+                  #np.abs(p_upper_pred-p_upper_true), 200, vmin=0, vmax=1, cmap='jet')
+#ax3.title.set_text('Absolute Error')
+f.subplots_adjust(right=0.8)
+cbar_ax = f.add_axes([0.85, 0.15, 0.02, 0.7])
+norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
+cmap = mpl.cm.cool
+clb=f.colorbar(mpl.cm.ScalarMappable(norm=norm,cmap='jet'), cax=cbar_ax)
+clb.set_label(r'$C_{\bar{p}}$', labelpad=-20, y=1.1, rotation=0)
