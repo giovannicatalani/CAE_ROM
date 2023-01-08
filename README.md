@@ -39,7 +39,7 @@ git clone git@github.com:giovannicatalani/CAE_ROM.git
 The model uses the **PyTorch** library.
 To install dependencies with conda:
 ```shell script
-conda env create -f environment.yml
+conda env create -f env_rom.yml
 ```
 
 ### Usage
