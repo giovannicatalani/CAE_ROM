@@ -21,11 +21,11 @@ The description of the problem and the dataset can be found in the Thesis of G.C
 
 During the offline stage (training) of the model, the Autoencoder and the MLP are trained together: the CAE learns the mapping between the Input Images (113,65) to their latent representation and then back to reconstructed images through the decoder, while the MLP learns the mapping from the control inputs (AoA, pitch rate..) to the AE latent vectors.  The cumulative loss function contains two weighed terms: the AE reconstruction error, and the MLP latent vector prediction error.
 
-<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Offline_Stage.png" width="200" />
+<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Offline_Stage.png" width="800" />
 
 During the online stage (testing) of the model, the Encoder part of the CAE is discarderd. The control inputs are fed into the MLP, whose output represented the prediction of the latent vector which is then fed into the pretrained decoder. 
 
-<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Online_Stage.jpg" width="200" />
+<img src="https://github.com/giovannicatalani/CAE_ROM/blob/main/Images/Online_Stage.jpg" width="800" />
 
 
 
