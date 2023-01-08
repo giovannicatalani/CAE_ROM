@@ -5,12 +5,17 @@ Created on Fri Dec 30 20:13:16 2022
 @author: giosp
 """
 
-import torch
 import torch.nn as nn
 
 class ConvolutionalAutoencoder(nn.Module):
     def __init__(self,lat_dim):
         super(ConvolutionalAutoencoder, self).__init__()
+        """
+        Initialize the Convolutional Autoencoder module.
+        
+        Parameters:
+        lat_dim (int): Size of the latent space (bottleneck) representation.
+        """
 
         self.encoder = nn.Sequential(
             # Add your encoder layers here
