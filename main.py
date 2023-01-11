@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Dec 31 16:31:57 2022
+Created on Wed Jan 11 17:27:24 2023
 
 @author: giosp
 """
 
-from LoadMuldiconProperties import LoadMuldiconProperties
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -15,12 +15,13 @@ import matplotlib.pyplot as plt
 from utilities_ import run_epoch, run_val, predictmaneuver
 from DataLoader import DataLoader
 import matplotlib as mpl
+from LoadMuldiconProperties import LoadMuldiconProperties
 
 # Directories
 #data_directory = '/content/drive/MyDrive/Thesis NLR/data/'
 data_directory = 'D:/Thesis/POD_LSTM/data/'
-validation_maneuver = 'pitch_a10_A10_f05'
-test_maneuver = 'pitch_a10_A10_f05'
+validation_maneuver = 'pitch_a10_A10_f05/'
+test_maneuver = 'pitch_a10_A10_f05/'
 model_path = 'D:/Thesis/POD_LSTM/Autoencoder/model.pt'
 best_model_path = 'D:/Thesis/POD_LSTM/Autoencoder/best_model.pt'
 
@@ -56,7 +57,7 @@ train_loader, valid_loader, p_mean, p_std, control_mean, control_std = DataLoade
 print('Dataset creation: done \n')
 
 # Training
-if train_model == True:
+if train_model:
     state = {}
     state['best_valid_loss'] = float('inf')
     aux_loss = np.empty([6, 1000])  # store loss values
@@ -109,11 +110,11 @@ if train_model == True:
 pred_test, true_test = predictmaneuver(model_AE, model_lat, best_model_path, data_directory,
                                        test_maneuver, p_mean, p_std, control_mean, control_std, device=device)
 
-# Plotting
+#%% Plotting
 plt.style.use(['science', 'ieee'])
 MULDICON = LoadMuldiconProperties(data_directory)
 shape = [113, 65]
-k = 50
+k = 100
 
 p_upper_true = true_test[k, int(shape[0] / 2):, :]
 p_upper_pred = pred_test[k, int(shape[0] / 2):, :]
@@ -124,8 +125,8 @@ ax1 = plt.subplot2grid((1, 2), (0, 0))
 ax2 = plt.subplot2grid((1, 2), (0, 1))
 #ax3 = plt.subplot2grid((1, 3), (0, 2))
 
-vmin = -5
-vmax = 1
+vmin = np.min(p_upper_true)
+vmax = np.max(p_upper_true)
 
 f.suptitle('Pressure Upper surface,Snapshot N.' + str(k))
 im = ax1.contourf(MULDICON.geom.geom_x_upper_norm, MULDICON.geom.geom_y_upper_norm,

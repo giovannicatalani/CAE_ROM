@@ -7,65 +7,7 @@ Created on Fri Jan  6 18:22:19 2023
 import numpy as np
 import torch
 
-def DataLoader(data_directory,validation_maneuver,batch_size,additional_data=True):
-    
-    test_directory = data_directory + 'simulations/' + validation_maneuver
-    #Load data (Numpy Arrays)
-    #Pressure Fields
-    train = np.load(data_directory + 'simulations/training_maneuver/labels_flow.npy')
-    valid = np.load(test_directory + '/labels_flow.npy')
-    
-    #Control Inputs
-    train_lat =  np.load(data_directory + 'simulations/training_maneuver/controls_flow.npy')[:,1:]
-    valid_lat =  np.load(test_directory + '/controls_flow.npy')[:,1:]
-    
-    
-    if additional_data:
-        #Add sharp pitch up with data cleaning
-        train_additional = np.load(data_directory + 'simulations/sharp_pitch_up/labels_flow.npy')[337:5:6237,1:]
-        train_additional_lat = np.load(data_directory + 'simulations/sharp_pitch_up/controls_flow.npy')[337:5:6237,1:]
-        train = np.concatenate((train,train_additional),axis=0)
-        train_lat = np.concatenate((train_lat,train_additional_lat),axis=0)
-    
-        
-    #Create Tensor Dataset
-    train = torch.from_numpy(train.astype(np.float))
-    valid = torch.from_numpy(valid.astype(np.float))
-    
-    
-    train_lat = torch.from_numpy(train_lat.astype(np.float))
-    valid_lat = torch.from_numpy(valid_lat.astype(np.float))
-   
-    
-    #Compute Mean and Std Pressure 
-    p_mean = train.mean((0))#for each channel
-    p_std = train.std((0))  #for each channel
-    #Compute Mean and Std Controls
-    control_mean = train_lat.mean((0))
-    control_std = train_lat.std((0))
-    
-    #Normalize
-    train = (train-p_mean)/p_std #in pressure
-    valid = (valid-p_mean)/p_std #in pressure
-    
-    
-    train_lat = (train_lat-control_mean)/control_std #in pressure
-    valid_lat = (valid_lat-control_mean)/control_std #in pressure
-    
-    
-    #Add dim to pressure to be processed by AE
-    train = train.unsqueeze(1)
-    valid = valid.unsqueeze(1)
-   
-    
-    #Define DataLoaders
-    train_ds = torch.utils.data.TensorDataset(train,train_lat)
-    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, num_workers=1, shuffle=True)
-    
-    valid_ds = torch.utils.data.TensorDataset(valid,valid_lat)
-    valid_loader = torch.utils.data.DataLoader(valid_ds, batch_size=batch_size, num_workers=1, shuffle=True)
-    
-    return train_loader, valid_loader, p_mean, p_std, control_mean, control_std
+
 
 
 def run_epoch(epoch, model,model_lat, train_loader, criterion, optimizer,optimizer_lat, weight_loss=0.5,device='cpu'):

@@ -11,10 +11,12 @@ class ConvolutionalAutoencoder(nn.Module):
     def __init__(self,lat_dim):
         super(ConvolutionalAutoencoder, self).__init__()
         """
-        Initialize the Convolutional Autoencoder module.
-        
-        Parameters:
-        lat_dim (int): Size of the latent space (bottleneck) representation.
+          Initialize the CAE module.
+          This model takes as input the images and learns their latent
+          representations
+          
+          Parameters:
+          latent_dim (int): Size of the latent vector (es. 5,10,20)
         """
 
         self.encoder = nn.Sequential(
@@ -68,3 +70,32 @@ class ConvolutionalAutoencoder(nn.Module):
         x = x.reshape(x.shape[0], -1, 14, 8)
         x = self.decoder(x)
         return x, x_lat
+
+
+class MLP(nn.Module):
+  """
+    Initialize the Multilayer Prceptron Module module.
+    This model takes as input the control variables and learn the latent
+    representation of the CAE
+    
+    Parameters:
+    input size (int): Size of the control variables vector (es. 5)
+    hidden size (int): Size of intermediate MLP layers
+    output size (int): Size of the latent space (bottleneck) representation.
+  """
+  def __init__(self, input_size, hidden_size, output_size):
+    super(MLP, self).__init__()
+    self.fc1 = nn.Linear(input_size, hidden_size)
+    self.relu = nn.Tanh()
+    self.fc2 = nn.Linear(hidden_size, hidden_size)
+    self.relu = nn.Tanh()
+    self.fc3 = nn.Linear(hidden_size, output_size)
+    
+
+  def forward(self, x):
+    x = self.fc1(x)
+    x = self.relu(x)
+    x = self.fc2(x)
+    x = self.relu(x)
+    x = self.fc3(x)
+    return x
