@@ -27,7 +27,7 @@ best_model_path = 'D:/Thesis/POD_LSTM/Autoencoder/best_model.pt'
 
 #Options
 additional_data = True #Adds sharp pitch up data for training
-train_model = False #If false pretrained best model is used for inference
+train_model = True #If false pretrained best model is used for inference
 
 # Define the device to use for training (e.g. GPU, CPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

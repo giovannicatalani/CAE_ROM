@@ -96,10 +96,10 @@ def DataLoader(data_directory, validation_maneuver, batch_size, additional_data=
     
 
     # Define DataLoaders
-    train_ds = torch.utils.data.TensorDataset(train, train_controls)
+    train_ds = torch.utils.data.TensorDataset(train_pressure, train_controls)
     train_loader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, num_workers=1, shuffle=True)
 
-    valid_ds = torch.utils.data.TensorDataset(valid, valid_controls)
+    valid_ds = torch.utils.data.TensorDataset(valid_pressure, valid_controls)
     valid_loader = torch.utils.data.DataLoader(valid_ds, batch_size=batch_size, num_workers=1, shuffle=True)
 
     return train_loader, valid_loader, pressure_mean, pressure_std, control_mean, control_std

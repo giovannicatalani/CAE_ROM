@@ -7,9 +7,6 @@ Created on Fri Jan  6 18:22:19 2023
 import numpy as np
 import torch
 
-
-
-
 def run_epoch(epoch, model,model_lat, train_loader, criterion, optimizer,optimizer_lat, weight_loss=0.5,device='cpu'):
   running_loss_AE = 0 
   running_loss_lat = 0
@@ -29,14 +26,16 @@ def run_epoch(epoch, model,model_lat, train_loader, criterion, optimizer,optimiz
         # Forward pass
         outputs, outputs_lat = model(inputs)
         outputs_mlp = model_lat(inputs_lat)
-        
+        # if i % 10==0:
+        #    print(inputs[1,0].unsqueeze(1))
+        #    print(outputs[1])
+              
         loss_AE = criterion(outputs, inputs)
         loss_lat = criterion(outputs_mlp, outputs_lat)
 
         loss_total = weight_loss * loss_AE + (1-weight_loss) * loss_lat
         loss_total.backward()
-        optimizer.step()
-
+        
         # Backward pass and optimization
         optimizer.step()
         optimizer_lat.step()
