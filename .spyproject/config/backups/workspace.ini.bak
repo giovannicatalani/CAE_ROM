@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['Train.py', '..\\POD_lstm\\POD_DD\\POD_DD.py', '..\\POD_lstm\\utilities_\\Data_visualization.py', 'Model.py', 'utilities_.py', '..\\ROM\\Pod_global\\plotwriter.py', 'DataLoader.py', 'main.py']
+recent_files = ['Train.py', '..\\POD_lstm\\POD_DD\\POD_DD.py', '..\\POD_lstm\\utilities_\\Data_visualization.py', 'Model.py', 'utilities_.py', '..\\ROM\\Pod_global\\plotwriter.py', 'DataLoader.py', 'main.py', 'test_unit.py', 'Model_VAE.py', 'main_VAE.py', 'env_rom.yaml', 'utilities_VAE.py']
 
 [main]
 version = 0.2.0

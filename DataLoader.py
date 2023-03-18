@@ -35,7 +35,7 @@ def compute_mean_std(data):
 def normalize(data, mean, std):
     return (data - mean) / std
 
-def DataLoader(data_directory, validation_maneuver, batch_size, additional_data=True):
+def DataLoader(data_directory, validation_maneuver, batch_size, additional_data=True,shuffle=True):
     VALIDATION_MANEUVER_FOLDER = 'simulations/' + validation_maneuver
 
     # Load data (Numpy Arrays)
@@ -81,25 +81,25 @@ def DataLoader(data_directory, validation_maneuver, batch_size, additional_data=
     valid_controls = torch.from_numpy(valid_controls.astype(np.float))
 
     # Add dim to pressure to be processed by AE
-    geom = geom.unsqueeze(0)
-    train_geom = geom.expand((train_pressure.size()[0], ) + geom.size()[1:])
-    valid_geom = geom.expand((valid_pressure.size()[0], ) + geom.size()[1:])
+    # geom = geom.unsqueeze(0)
+    # train_geom = geom.expand((train_pressure.size()[0], ) + geom.size()[1:])
+    # valid_geom = geom.expand((valid_pressure.size()[0], ) + geom.size()[1:])
     train_pressure = train_pressure.unsqueeze(1)
     valid_pressure = valid_pressure.unsqueeze(1)
       
-    train = torch.cat((train_pressure, train_geom), axis = 1)
-    valid = torch.cat((valid_pressure, valid_geom), axis = 1)
+    # train = torch.cat((train_pressure, train_geom), axis = 1)
+    # valid = torch.cat((valid_pressure, valid_geom), axis = 1)
     
-    print(train_geom.size())
-    print(train.size())
-    print(train_controls.size())
+    # print(train_geom.size())
+    # print(train.size())
+    # print(train_controls.size())
     
 
     # Define DataLoaders
     train_ds = torch.utils.data.TensorDataset(train_pressure, train_controls)
-    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, num_workers=1, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, num_workers=1, shuffle=shuffle)
 
     valid_ds = torch.utils.data.TensorDataset(valid_pressure, valid_controls)
-    valid_loader = torch.utils.data.DataLoader(valid_ds, batch_size=batch_size, num_workers=1, shuffle=True)
+    valid_loader = torch.utils.data.DataLoader(valid_ds, batch_size=batch_size, num_workers=1, shuffle=shuffle)
 
     return train_loader, valid_loader, pressure_mean, pressure_std, control_mean, control_std
