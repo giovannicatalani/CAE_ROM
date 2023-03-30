@@ -1,4 +1,4 @@
 Train.py
 best_model.pt
-__pycache__
-.spyproject
+__pycache__/
+.spyproject/
