@@ -2,3 +2,4 @@ Train.py
 best_model.pt
 __pycache__/
 .spyproject/config/
+LoadMuldiconProperties.py
